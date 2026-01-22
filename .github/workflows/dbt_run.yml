@@ -32,3 +32,4 @@ jobs:
 
 - name: Run dbt tests
   run: dbt test --profiles-dir .
+# Sincronización forzada
