@@ -9,12 +9,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      
       - uses: actions/setup-python@v4
         with:
           python-version: '3.10'
+          
       - name: Install dependencies
-        run: pip install dbt-duckdb
-      - name: Check dbt
+        run: |
+          pip install dbt-duckdb dlt pandas openpyxl
+          
+      - name: Run Data Ingestion
+        # Reemplaza 'tu_script.py' con el nombre real de tu archivo
+        run: python tu_script.py 
+        
+      - name: Check dbt (Debug)
         run: dbt debug --profiles-dir .
-      - name: Run dbt
+        
+      - name: Run dbt transformation
         run: dbt run --profiles-dir .
+        
+      - name: Run dbt tests
+        run: dbt test --profiles-dir .
