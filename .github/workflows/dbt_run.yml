@@ -17,19 +17,17 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-python-version: '3.10'
+          python-version: '3.10'
 
       - name: Install dependencies
         run: |
           pip install dbt-duckdb
 
       - name: Check dbt (Debug)
-        run: dbt debug
+        run: dbt debug --profiles-dir .
 
-     # Cambia las líneas de dbt por estas:
-- name: Run dbt transformation
-  run: dbt run --profiles-dir .
+      - name: Run dbt transformation
+        run: dbt run --profiles-dir .
 
-- name: Run dbt tests
-  run: dbt test --profiles-dir .
-# Sincronización forzada
+      - name: Run dbt tests
+        run: dbt test --profiles-dir .
