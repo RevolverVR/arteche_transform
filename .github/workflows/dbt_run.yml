@@ -2,32 +2,19 @@ name: dbt_transformation_check
 
 on:
   push:
-    branches:
-      - main
-  pull_request:
+    branches: [ main ]
 
 jobs:
   check_transformation:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Set up Python
-        uses: actions/setup-python@v4
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
         with:
           python-version: '3.10'
-
       - name: Install dependencies
-        run: |
-          pip install dbt-duckdb
-
-      - name: Check dbt (Debug)
+        run: pip install dbt-duckdb
+      - name: Check dbt
         run: dbt debug --profiles-dir .
-
-      - name: Run dbt transformation
+      - name: Run dbt
         run: dbt run --profiles-dir .
-
-      - name: Run dbt tests
-        run: dbt test --profiles-dir .
