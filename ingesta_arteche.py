@@ -3,7 +3,6 @@ import pandas as pd
 import os
 
 def ejecutar_ingesta():
-    # 1. El nombre de tu archivo de datos (ASEGÚRATE QUE EL NOMBRE SEA EXACTO)
     archivo_fuente = "KPI(Base Tickets) (version 1) Arteche.xlsx" 
     
     if not os.path.exists(archivo_fuente):
@@ -11,17 +10,26 @@ def ejecutar_ingesta():
         return
 
     print(f"🚀 Iniciando ingesta de datos desde {archivo_fuente}...")
+    
+    # 1. Cargar el DataFrame
     df = pd.read_excel(archivo_fuente)
 
-    # 2. Configurar el pipeline hacia DuckDB
-    # El dataset_name debe ser 'datos_crudos' porque así lo busca dbt
+    # 2. LIMPIEZA CRÍTICA: Convertir columnas de fecha y manejar errores
+    # Esto convertirá textos inválidos en 'NaT' (Not a Time), evitando el error de Arrow
+    columnas_fecha = ['Responded Date'] # Agrega aquí otras columnas de fecha si fallan
+    for col in columnas_fecha:
+        if col in df.columns:
+            print(f"🧹 Limpiando columna: {col}")
+            df[col] = pd.to_datetime(df[col], errors='coerce')
+
+    # 3. Configurar el pipeline hacia DuckDB
     pipeline = dlt.pipeline(
         pipeline_name='ingesta_arteche',
         destination='duckdb',
         dataset_name='datos_crudos'
     )
 
-    # 3. Cargar los datos en la tabla 'tickets'
+    # 4. Cargar los datos
     load_info = pipeline.run(df, table_name="tickets", write_disposition="replace")
     
     print("✅ Ingesta completada exitosamente.")
