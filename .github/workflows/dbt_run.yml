@@ -26,8 +26,9 @@ jobs:
       - name: Check dbt (Debug)
         run: dbt debug
 
-      - name: Run dbt transformation
-        run: dbt run
+     # Cambia las líneas de dbt por estas:
+- name: Run dbt transformation
+  run: dbt run --profiles-dir .
 
-      - name: Run dbt tests
-        run: dbt test
+- name: Run dbt tests
+  run: dbt test --profiles-dir .

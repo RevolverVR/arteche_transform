@@ -1,0 +1,6 @@
+arteche_transform:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      path: ingesta_arteche.duckdb
