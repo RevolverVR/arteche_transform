@@ -20,7 +20,7 @@ jobs:
           
       - name: Run Data Ingestion
         # Reemplaza 'tu_script.py' con el nombre real de tu archivo
-        run: python tu_script.py 
+        run: python ingesta_arteche.py 
         
       - name: Check dbt (Debug)
         run: dbt debug --profiles-dir .
