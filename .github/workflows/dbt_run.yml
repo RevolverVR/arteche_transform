@@ -3,30 +3,36 @@ name: dbt_transformation_check
 on:
   push:
     branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
 jobs:
   check_transformation:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v3
-      
-      - uses: actions/setup-python@v4
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
         with:
           python-version: '3.10'
-          
+
       - name: Install dependencies
         run: |
-          pip install dbt-duckdb dlt pandas openpyxl
-          
+          pip install dbt-duckdb "dlt[parquet]" pandas openpyxl
+
       - name: Run Data Ingestion
-        # Reemplaza 'tu_script.py' con el nombre real de tu archivo
-        run: python ingesta_arteche.py 
-        
+        # Este paso crea la base de datos DuckDB antes de que dbt la use
+        run: python ingesta_arteche.py
+
       - name: Check dbt (Debug)
+        # Valida la conexión usando el perfil en la raíz del proyecto
         run: dbt debug --profiles-dir .
-        
+
       - name: Run dbt transformation
         run: dbt run --profiles-dir .
-        
+
       - name: Run dbt tests
         run: dbt test --profiles-dir .
