@@ -1,0 +1,19 @@
+version: 2
+
+models:
+  - name: stg_tickets
+    description: "Tickets de soporte técnico de Arteche limpios y con tipos de datos corregidos."
+    columns:
+      - name: ticket_id
+        description: "ID único del ticket generado por el sistema origen."
+        tests:
+          - unique
+          - not_null
+
+      - name: tecnico
+        description: "Nombre del técnico asignado al ticket."
+        tests:
+          - not_null
+
+      - name: fecha_creacion
+        description: "Fecha y hora en que se abrió el reporte."

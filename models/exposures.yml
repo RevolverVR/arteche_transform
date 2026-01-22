@@ -1,0 +1,12 @@
+version: 2
+
+exposures:
+  - name: reporte_ejecutivo_sla
+    type: dashboard
+    maturity: high
+    url: http://localhost:3000
+    description: "Tablero interactivo con métricas de cumplimiento de 4 horas."
+    depends_on:
+      - ref('fct_tickets')
+    owner:
+      name: Vlad

@@ -1,0 +1,29 @@
+# Nombre del proyecto
+name: 'arteche_transform'
+version: '1.0.0'
+config-version: 2
+
+# Perfil de conexión (el que configuramos en ~/.dbt/profiles.yml)
+profile: 'arteche_transform'
+
+# Rutas de carpetas del proyecto
+model-paths: ["models"]
+analysis-paths: ["analyses"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+# Configuración de los Modelos
+models:
+  arteche_transform:
+    # Capa de Limpieza (Staging): Usamos vistas para ahorrar espacio
+    staging:
+      +materialized: view
+    # Capa de Negocio (Marts): Usamos tablas para que las consultas sean rápidas
+    marts:
+      +materialized: table
